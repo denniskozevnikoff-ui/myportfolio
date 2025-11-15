@@ -69,23 +69,21 @@ export const signin = async (req, res) => {
   //   res.status(500).json({ message: 'Server error', error: err.message });
   // }
 
- try {
-    const { email, password } = req.body;
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: "Email is required" });
 
+    // Find user by email
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid email" });
+    if (!user) return res.status(400).json({ message: "User not found" });
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ message: "Wrong password" });
+    // Generate token (even without password check)
+    const token = jwt.sign({ id: user._id, role: user.role }, SECRET, { expiresIn: EXPIRES_IN });
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
-
-    res.json({ message: "Signin successful", token });
+    // Return token and user info
+    res.json({ message: "Signin successful", token, user: user.toJSON() });
   } catch (error) {
+    console.error('Signin error:', error);
     res.status(500).json({ error: error.message });
   }
 

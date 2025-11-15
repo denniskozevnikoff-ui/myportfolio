@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
+import dotenv from "dotenv";
+dotenv.config();
 
 // import routes
 import contactRoutes from './server/route/contactRoute.js'
@@ -12,8 +14,7 @@ import projectRoutes from './server/route/projectRoute.js'
 import educationRoutes from './server/route/educationRoute.js'
 import userRoutes from './server/route/userRoute.js'
 import authRoutes from './server/route/authRoute.js'
-import dotenv from "dotenv";
-dotenv.config();
+
 
 
 const app = express()
