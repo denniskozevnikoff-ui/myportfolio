@@ -12,6 +12,9 @@ import projectRoutes from './server/route/projectRoute.js'
 import educationRoutes from './server/route/educationRoute.js'
 import userRoutes from './server/route/userRoute.js'
 import authRoutes from './server/route/authRoute.js'
+import dotenv from "dotenv";
+dotenv.config();
+
 
 const app = express()
 
@@ -30,13 +33,14 @@ app.use('/api/education', educationRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
 
+
 // default route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to MyPortfolio application.' })
 })
 
 // connect to MongoDB
-const MONGO_URI = 'mongodb+srv://denniskozevnikoff_db_user:wTzULBba5tYd4hil@cluster1.sfofvex.mongodb.net/?appName=cluster1'
+const MONGO_URI = process.env.MONGO_URI
 
 async function start() {
   try {
